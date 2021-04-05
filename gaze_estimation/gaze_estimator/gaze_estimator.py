@@ -6,7 +6,8 @@ import numpy as np
 import torch
 import yacs.config
 
-from gaze_estimation.gaze_estimator.common import Camera, Face, FacePartsName, MODEL3D
+from gaze_estimation.gaze_estimator.common import Camera, Face, FacePartsName
+from .common.face_model import FaceModel
 from .head_pose_estimation import HeadPoseNormalizer, LandmarkEstimator
 from gaze_estimation import (GazeEstimationMethod, create_model,
                              create_transform)
@@ -30,6 +31,7 @@ class GazeEstimator:
             self._config.gaze_estimator.normalized_camera_distance)
         self._gaze_estimation_model = self._load_model()
         self._transform = create_transform(config)
+        self.model3d = FaceModel(config)
 
     def _load_model(self) -> torch.nn.Module:
         model = create_model(self._config)
@@ -44,9 +46,9 @@ class GazeEstimator:
         return self._landmark_estimator.detect_faces(image)
 
     def estimate_gaze(self, image: np.ndarray, face: Face) -> None:
-        MODEL3D.estimate_head_pose(face, self.camera)
-        MODEL3D.compute_3d_pose(face)
-        MODEL3D.compute_face_eye_centers(face)
+        self.model3d.estimate_head_pose(face, self.camera)
+        self.model3d.compute_3d_pose(face)
+        self.model3d.compute_face_eye_centers(face)
 
         if self._config.mode == GazeEstimationMethod.MPIIGaze.name:
             for key in self.EYE_KEYS:

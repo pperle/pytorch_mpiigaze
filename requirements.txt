@@ -12,3 +12,4 @@ tqdm
 yacs
 fvcore
 termcolor
+mediapipe==0.8.3.1

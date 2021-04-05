@@ -21,3 +21,5 @@ demo:
   show_landmarks: True
   show_normalized_image: False
   show_template_model: False
+face_detector:
+  mode: 'MediaPipe'

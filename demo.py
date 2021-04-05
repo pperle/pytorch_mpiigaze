@@ -140,7 +140,7 @@ class Demo:
             return
         # Draw the axes of the model coordinate system
         length = self.config.demo.head_pose_axis_length
-        self.visualizer.draw_model_axes(face, length, lw=2)
+        self.visualizer.draw_model_axes(face, length, lw=2, model3d=self.gaze_estimator.model3d)
 
         euler_angles = face.head_pose_rot.as_euler('XYZ', degrees=True)
         pitch, yaw, roll = face.change_coordinate_system(euler_angles)

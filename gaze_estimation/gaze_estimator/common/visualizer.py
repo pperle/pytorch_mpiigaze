@@ -4,7 +4,7 @@ import cv2
 import numpy as np
 from scipy.spatial.transform import Rotation
 
-from gaze_estimation.gaze_estimator.common import Camera, Face, MODEL3D
+from gaze_estimation.gaze_estimator.common import Camera, Face
 
 AXIS_COLORS = [(0, 0, 255), (0, 255, 0), (255, 0, 0)]
 
@@ -63,7 +63,7 @@ class Visualizer:
         pt1 = self._convert_pt(points2d[1])
         cv2.line(self.image, pt0, pt1, color, lw, cv2.LINE_AA)
 
-    def draw_model_axes(self, face: Face, length: float, lw: int = 2) -> None:
+    def draw_model_axes(self, face: Face, length: float, lw: int = 2, model3d = None) -> None:
         assert self.image is not None
         assert face is not None
         assert face.head_pose_rot is not None
@@ -76,7 +76,7 @@ class Visualizer:
         axes2d = self._camera.project_points(axes3d,
                                              face.head_pose_rot.as_rotvec(),
                                              face.head_position)
-        center = face.landmarks[MODEL3D.NOSE_INDEX]
+        center = face.landmarks[model3d.NOSE_INDEX]
         center = self._convert_pt(center)
         for pt, color in zip(axes2d, AXIS_COLORS):
             pt = self._convert_pt(pt)
