@@ -580,9 +580,9 @@ class FaceModel:
                 [4.530000, 2.910000, 3.339685]
             ],
                 dtype=np.float)
-            self.LANDMARKS /= 10.0  # cm to mm
-
-            dlib_map = [127, 234, 93, 132, 58, 172, 136, 0, 152]
+            self.LANDMARKS /= 100  # cm to m
+            self.LANDMARKS -= self.LANDMARKS[1]
+            self.LANDMARKS *= np.array([1, -1, -1])
 
             self.REYE_INDICES: np.ndarray = np.array([33, 133])
             self.LEYE_INDICES: np.ndarray = np.array([362, 263])
